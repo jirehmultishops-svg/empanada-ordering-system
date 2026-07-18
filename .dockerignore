@@ -1,0 +1,10 @@
+node_modules
+.git
+.kiro
+backend/node_modules
+frontend/node_modules
+backend/dist
+frontend/dist
+*.md
+.env
+.env.*
