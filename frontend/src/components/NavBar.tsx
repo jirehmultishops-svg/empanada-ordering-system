@@ -15,7 +15,7 @@ export default function NavBar() {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <NavLink to="/">🥟 Empanadas</NavLink>
+        <NavLink to="/">Jireh.Producción</NavLink>
       </div>
       <div className="navbar-links">
         {isAdmin ? (
