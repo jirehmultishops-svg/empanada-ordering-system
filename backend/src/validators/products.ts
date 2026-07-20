@@ -50,9 +50,11 @@ export function validateProduct(body: unknown): { valid: true; data: ProductInpu
     errors.push({ field: 'image_url', message: 'La URL de imagen debe ser un texto' });
   }
 
-  // active: optional, but must be boolean if provided
+  // active: optional, but must be boolean or boolean string if provided
   if (data.active !== undefined && data.active !== null && typeof data.active !== 'boolean') {
-    errors.push({ field: 'active', message: 'El campo active debe ser un booleano' });
+    if (data.active !== 'true' && data.active !== 'false') {
+      errors.push({ field: 'active', message: 'El campo active debe ser un booleano' });
+    }
   }
 
   if (errors.length > 0) {
@@ -74,7 +76,7 @@ export function validateProduct(body: unknown): { valid: true; data: ProductInpu
   }
 
   if (data.active !== undefined && data.active !== null) {
-    result.active = data.active as boolean;
+    result.active = data.active === true || data.active === 'true';
   }
 
   return { valid: true, data: result };
