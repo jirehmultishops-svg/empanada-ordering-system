@@ -1,6 +1,16 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { AuthResponse, getToken, setToken, clearToken, login as apiLogin, register as apiRegister } from '../api';
 
+function isTokenExpired(token: string): boolean {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    if (!payload.exp) return false;
+    return Date.now() >= payload.exp * 1000;
+  } catch {
+    return true;
+  }
+}
+
 interface User {
   id: string;
   username: string;
@@ -27,14 +37,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const token = getToken();
     if (token) {
-      // Try to decode user from stored data
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-        try {
-          setUser(JSON.parse(storedUser));
-        } catch {
-          clearToken();
-          localStorage.removeItem('user');
+      if (isTokenExpired(token)) {
+        clearToken();
+        localStorage.removeItem('user');
+      } else {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          try {
+            setUser(JSON.parse(storedUser));
+          } catch {
+            clearToken();
+            localStorage.removeItem('user');
+          }
         }
       }
     }

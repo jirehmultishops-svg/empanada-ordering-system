@@ -34,6 +34,7 @@ async function adminRequest<T>(
 
   if (response.status === 401) {
     clearToken();
+    localStorage.removeItem('user');
     window.location.href = '/login';
     throw new Error('Sesión expirada');
   }

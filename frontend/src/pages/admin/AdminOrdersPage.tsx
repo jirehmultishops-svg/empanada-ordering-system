@@ -39,6 +39,8 @@ export default function AdminOrdersPage() {
       const data = await getAdminOrders(statusFilter || undefined);
       setOrders(data);
     } catch (err: unknown) {
+      // Don't show error if session expired (redirect is already happening)
+      if (err instanceof Error && err.message === 'Sesión expirada') return;
       setError(err instanceof Error ? err.message : 'Error al cargar pedidos');
     } finally {
       setLoading(false);
