@@ -12,8 +12,8 @@ export default function CartItemRow({ item, onUpdateQuantity, onRemove, disabled
   return (
     <div className="cart-item">
       <div className="cart-item-info">
-        <span className="cart-item-name">{item.product.name}</span>
-        <span className="cart-item-price">${item.product.price.toFixed(2)} c/u</span>
+        <span className="cart-item-name">{item.name}</span>
+        <span className="cart-item-price">${item.price.toFixed(2)} c/u</span>
       </div>
       <div className="cart-item-controls">
         <button
@@ -37,7 +37,7 @@ export default function CartItemRow({ item, onUpdateQuantity, onRemove, disabled
           className="btn btn-icon btn-danger"
           onClick={() => onRemove(item.id)}
           disabled={disabled}
-          aria-label={`Eliminar ${item.product.name}`}
+          aria-label={`Eliminar ${item.name}`}
         >
           ✕
         </button>

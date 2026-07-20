@@ -56,6 +56,10 @@ inclusion: auto
 9. Agregado logging en middleware auth para debugging
 10. Creada bitácora de proyecto (.kiro/steering/project-context.md) con inclusion: auto
 11. Creado hook "update-project-log" para actualizar bitácora al final de cada sesión
+12. Reestructuración de rutas: cada pestaña tiene su propia página (no sobrecargar HTML)
+    - Cliente: / (HomePage con pedidos activos + proceso entrega), /catalog, /cart, /orders
+    - Admin: /admin (AdminHomePage dashboard con stats), /admin/orders, /admin/catalog, /admin/delivery
+13. NavBar actualizado: cliente ve Inicio/Catálogo/Carrito/Pedidos, admin ve Inicio/Pedidos/Catálogo/Entrega
 
 ## Credenciales Admin
 - Usuario: admin
@@ -63,6 +67,19 @@ inclusion: auto
 - Rol: admin (en tabla client)
 
 ## Arquitectura de Rutas
+
+### Frontend (React Router)
+- / → HomePage (cliente: pedidos activos + proceso entrega + accesos rápidos; no logueado: hero + pasos)
+- /catalog → CatalogPage (carrusel + productos públicos)
+- /cart → CartPage (auth requerida)
+- /orders → OrdersPage (historial, auth requerida)
+- /login, /register → Auth pages
+- /admin → AdminHomePage (dashboard con stats)
+- /admin/orders → AdminOrdersPage
+- /admin/catalog → AdminCatalogPage
+- /admin/delivery → AdminDeliveryPage
+
+### Backend API
 - /api/auth - login/register
 - /api/catalog - catálogo público (sin auth)
 - /api/categories - CRUD categorías (admin)

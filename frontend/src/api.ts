@@ -106,8 +106,10 @@ export function getCatalog(): Promise<Category[]> {
 export interface CartItem {
   id: string;
   product_id: string;
+  name: string;
+  image_url: string | null;
+  price: number;
   quantity: number;
-  product: Product;
   subtotal: number;
 }
 
