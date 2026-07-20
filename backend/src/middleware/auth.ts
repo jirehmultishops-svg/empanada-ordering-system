@@ -11,12 +11,15 @@ export interface AuthRequest extends Request {
   user?: AuthPayload;
 }
 
-const JWT_SECRET = process.env.JWT_SECRET || 'empanadas-jireh-secreto-2024';
+function getJwtSecret(): string {
+  return process.env.JWT_SECRET || 'empanadas-jireh-secreto-2024';
+}
 
 export function authenticate(req: AuthRequest, res: Response, next: NextFunction): void {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    console.error('[AUTH] No Authorization header or invalid format. Path:', req.path);
     res.status(401).json({ message: 'Token de autenticación requerido' });
     return;
   }
@@ -24,10 +27,12 @@ export function authenticate(req: AuthRequest, res: Response, next: NextFunction
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as AuthPayload;
+    const secret = getJwtSecret();
+    const decoded = jwt.verify(token, secret) as AuthPayload;
     req.user = decoded;
     next();
-  } catch (error) {
+  } catch (error: any) {
+    console.error('[AUTH] Token verification failed. Path:', req.path, 'Error:', error.message, 'Token prefix:', token.substring(0, 20) + '...');
     res.status(401).json({ message: 'Token inválido o expirado' });
     return;
   }

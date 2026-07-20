@@ -1,8 +1,11 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 import authRouter from './routes/auth.js';
 import catalogRouter from './routes/catalog.js';
 import categoriesRouter from './routes/categories.js';
@@ -13,8 +16,6 @@ import timeslotsRouter from './routes/timeslots.js';
 import batchesRouter from './routes/batches.js';
 import settingsRouter from './routes/settings.js';
 import notificationsRouter from './routes/notifications.js';
-
-dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,6 +30,22 @@ app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Debug endpoint to verify token
+app.get('/api/debug/token', (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.json({ error: 'No Authorization header', headers: Object.keys(req.headers) });
+  }
+  const token = authHeader.split(' ')[1];
+  try {
+    const secret = process.env.JWT_SECRET || 'empanadas-jireh-secreto-2024';
+    const decoded = jwt.verify(token, secret);
+    return res.json({ valid: true, decoded, secret_source: process.env.JWT_SECRET ? 'env' : 'fallback' });
+  } catch (err: any) {
+    return res.json({ valid: false, error: err.message, secret_source: process.env.JWT_SECRET ? 'env' : 'fallback' });
+  }
 });
 
 app.use('/api/auth', authRouter);

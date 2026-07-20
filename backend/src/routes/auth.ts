@@ -4,7 +4,9 @@ import jwt from 'jsonwebtoken';
 import db from '../db/connection.js';
 import { validateRegister, validateLogin } from '../validators/auth.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'empanadas-jireh-secreto-2024';
+function getJwtSecret(): string {
+  return process.env.JWT_SECRET || 'empanadas-jireh-secreto-2024';
+}
 const JWT_EXPIRES_IN = '7d';
 
 const router = Router();
@@ -51,7 +53,7 @@ router.post('/register', async (req: Request, res: Response) => {
     // 6. Generate JWT
     const token = jwt.sign(
       { id: result.id, username: result.username, role: 'client' },
-      JWT_SECRET,
+      getJwtSecret(),
       { expiresIn: JWT_EXPIRES_IN }
     );
 
@@ -97,7 +99,7 @@ router.post('/login', async (req: Request, res: Response) => {
     // 4. Generate JWT
     const token = jwt.sign(
       { id: client.id, username: client.username, role: client.role },
-      JWT_SECRET,
+      getJwtSecret(),
       { expiresIn: JWT_EXPIRES_IN }
     );
 
