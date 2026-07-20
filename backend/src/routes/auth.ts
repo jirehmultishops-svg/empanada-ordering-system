@@ -5,7 +5,7 @@ import db from '../db/connection.js';
 import { validateRegister, validateLogin } from '../validators/auth.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'empanadas-jireh-secreto-2024';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
+const JWT_EXPIRES_IN = '7d';
 
 const router = Router();
 
