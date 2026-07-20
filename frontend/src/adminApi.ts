@@ -61,9 +61,10 @@ export interface AdminOrder extends Order {
   };
 }
 
-export function getAdminOrders(status?: string): Promise<AdminOrder[]> {
+export async function getAdminOrders(status?: string): Promise<AdminOrder[]> {
   const query = status ? `?status=${status}` : '';
-  return adminRequest<AdminOrder[]>(`/orders${query}`);
+  const data = await adminRequest<{ orders: AdminOrder[] }>(`/orders${query}`);
+  return data.orders;
 }
 
 export function updateOrderStatus(orderId: string, status: 'accepted' | 'rejected' | 'ready'): Promise<AdminOrder> {
@@ -165,8 +166,9 @@ export interface TimeSlot {
   active: boolean;
 }
 
-export function getTimeSlots(): Promise<TimeSlot[]> {
-  return adminRequest<TimeSlot[]>('/admin/time-slots');
+export async function getTimeSlots(): Promise<TimeSlot[]> {
+  const data = await adminRequest<{ time_slots: TimeSlot[] }>('/admin/time-slots');
+  return data.time_slots;
 }
 
 export function createTimeSlot(data: { slot_date: string; start_time: string; end_time: string }): Promise<TimeSlot> {
@@ -200,8 +202,9 @@ export interface Batch {
   orders?: AdminOrder[];
 }
 
-export function getBatches(): Promise<Batch[]> {
-  return adminRequest<Batch[]>('/admin/batches');
+export async function getBatches(): Promise<Batch[]> {
+  const data = await adminRequest<{ batches: Batch[] }>('/admin/batches');
+  return data.batches;
 }
 
 export function createBatch(order_ids: string[]): Promise<Batch> {

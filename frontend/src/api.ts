@@ -182,15 +182,17 @@ export interface BankDetails {
   alias: string;
 }
 
-export function createOrder(pickup_suggestion?: string): Promise<Order> {
-  return request<Order>('/orders', {
+export async function createOrder(pickup_suggestion?: string): Promise<Order> {
+  const data = await request<{ order: Order; bank_transfer: BankDetails }>('/orders', {
     method: 'POST',
     body: JSON.stringify({ pickup_suggestion }),
   });
+  return { ...data.order, bank_details: data.bank_transfer };
 }
 
-export function getMyOrders(): Promise<Order[]> {
-  return request<Order[]>('/orders/my');
+export async function getMyOrders(): Promise<Order[]> {
+  const data = await request<{ orders: Order[] }>('/orders/my');
+  return data.orders;
 }
 
 export function uploadReceipt(orderId: string, file: File): Promise<Receipt> {
@@ -210,8 +212,9 @@ export interface Notification {
   created_at: string;
 }
 
-export function getNotifications(): Promise<Notification[]> {
-  return request<Notification[]>('/notifications');
+export async function getNotifications(): Promise<Notification[]> {
+  const data = await request<{ notifications: Notification[] }>('/notifications');
+  return data.notifications;
 }
 
 export { getToken, setToken, clearToken };

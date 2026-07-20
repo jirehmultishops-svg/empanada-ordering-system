@@ -60,6 +60,7 @@ router.post('/register', async (req: Request, res: Response) => {
         name: result.name,
         username: result.username,
         whatsapp: result.whatsapp,
+        role: 'client',
       },
     });
   } catch (error) {
@@ -105,6 +106,7 @@ router.post('/login', async (req: Request, res: Response) => {
         name: client.name,
         username: client.username,
         whatsapp: client.whatsapp,
+        role: client.role,
       },
     });
   } catch (error) {
