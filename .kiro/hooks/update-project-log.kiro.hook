@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Actualizar bitácora",
+  "description": "Al terminar una ejecución, recuerda actualizar .kiro/steering/project-context.md con los cambios realizados en la sesión.",
+  "version": "1",
+  "when": {
+    "type": "agentStop"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Si hiciste cambios significativos al proyecto en esta sesión (nuevas features, fixes, cambios de config, etc.), actualiza .kiro/steering/project-context.md agregando los cambios en la sección correspondiente. Si no hubo cambios significativos, no hagas nada."
+  }
+}

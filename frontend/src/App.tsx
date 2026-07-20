@@ -4,11 +4,13 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import NavBar from './components/NavBar';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminProtectedRoute from './components/AdminProtectedRoute';
+import HomePage from './pages/HomePage';
 import CatalogPage from './pages/CatalogPage';
 import CartPage from './pages/CartPage';
 import OrdersPage from './pages/OrdersPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import AdminHomePage from './pages/admin/AdminHomePage';
 import AdminOrdersPage from './pages/admin/AdminOrdersPage';
 import AdminCatalogPage from './pages/admin/AdminCatalogPage';
 import AdminDeliveryPage from './pages/admin/AdminDeliveryPage';
@@ -33,7 +35,9 @@ function AppRoutes() {
       <NavBar />
       <main className="main-content">
         <Routes>
-          <Route path="/" element={<CatalogPage />} />
+          {/* Client Routes */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/catalog" element={<CatalogPage />} />
           <Route
             path="/login"
             element={
@@ -67,6 +71,14 @@ function AppRoutes() {
             }
           />
           {/* Admin Routes */}
+          <Route
+            path="/admin"
+            element={
+              <AdminProtectedRoute>
+                <AdminHomePage />
+              </AdminProtectedRoute>
+            }
+          />
           <Route
             path="/admin/orders"
             element={

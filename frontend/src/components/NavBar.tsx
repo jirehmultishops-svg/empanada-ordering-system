@@ -15,11 +15,14 @@ export default function NavBar() {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <NavLink to="/">Jireh.Producción</NavLink>
+        <NavLink to={isAdmin ? '/admin' : '/'}>Jireh.Producción</NavLink>
       </div>
       <div className="navbar-links">
         {isAdmin ? (
           <>
+            <NavLink to="/admin" end className={({ isActive }) => isActive ? 'active' : ''}>
+              Inicio
+            </NavLink>
             <NavLink to="/admin/orders" className={({ isActive }) => isActive ? 'active' : ''}>
               Pedidos
             </NavLink>
@@ -35,8 +38,11 @@ export default function NavBar() {
           </>
         ) : (
           <>
-            <NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>
-              Menú
+            <NavLink to="/" end className={({ isActive }) => isActive ? 'active' : ''}>
+              Inicio
+            </NavLink>
+            <NavLink to="/catalog" className={({ isActive }) => isActive ? 'active' : ''}>
+              Catálogo
             </NavLink>
             {isAuthenticated ? (
               <>
