@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getCatalog, addToCart, Category } from '../api';
 import { useAuth } from '../context/AuthContext';
 import ProductCard from '../components/ProductCard';
+import PromoCarousel from '../components/PromoCarousel';
 
 export default function CatalogPage() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -53,6 +54,7 @@ export default function CatalogPage() {
 
   return (
     <div className="catalog-page">
+      <PromoCarousel />
       <h1>Nuestro Menú</h1>
       {categories.length === 0 ? (
         <p className="empty-state">No hay productos disponibles en este momento.</p>
