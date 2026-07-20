@@ -23,7 +23,10 @@ router.get('/', async (_req: Request, res: Response) => {
       display_order: category.display_order,
       products: products
         .filter((p) => p.category_id === category.id)
-        .map(({ category_id: _cid, ...rest }) => rest),
+        .map(({ category_id: _cid, price, ...rest }) => ({
+          ...rest,
+          price: parseFloat(price),
+        })),
     }));
 
     return res.json(catalog);

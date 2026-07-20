@@ -28,7 +28,7 @@ router.get('/', async (_req, res: Response) => {
       .select('id', 'category_id', 'name', 'description', 'price', 'image_url', 'active', 'created_at', 'updated_at')
       .orderBy('name', 'asc');
 
-    return res.json(products);
+    return res.json(products.map(p => ({ ...p, price: parseFloat(p.price) })));
   } catch (error) {
     console.error('Error fetching products:', error);
     return res.status(500).json({ message: 'Error interno del servidor' });
